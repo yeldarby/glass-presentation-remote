@@ -21,16 +21,18 @@ var player = new PreziPlayer('prezi-player', {
 var fb_root;
 player.on(PreziPlayer.EVENT_STATUS, function(event) {
     if (event.value == PreziPlayer.STATUS_CONTENT_READY) {
-	fb_root = new Firebase('https://controller.firebaseio.com');
-	fb_root.child('commands').on('child_added', function(snapshot) {
-		var command = snapshot.val();
-		snapshot.ref().remove();
-		if(command == 'SWIPE_RIGHT') {
-			player.flyToNextStep();
-		} else if(command == 'SWIPE_LEFT') {
-			player.flyToPreviousStep();
-		}
-	});
+		fb_root = new Firebase('https://controller.firebaseio.com');
+		fb_root.child('commands').on('child_added', function(snapshot) {
+			var command = snapshot.val();
+			snapshot.ref().remove();
+			if(command == 'SWIPE_RIGHT') {
+				player.flyToNextStep();
+			} else if(command == 'SWIPE_LEFT') {
+				player.flyToPreviousStep();
+			} else {
+				console.log('Other command... ' + command);
+			}
+		});
     }
 });
 </script>
