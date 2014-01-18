@@ -6,57 +6,69 @@
 <head>
 <title>Presentation Remote for Google Glass</title>
 <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.2/firebase.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script src="prezi_player.js"></script>
+
+<style>
+body {
+	margin: 0;
+}
+</style>
+
 </head>
 <body>
 <div id="prezi-player"></div>
 <script>
-var prezi_id = '4zddjjwubebg';
-var player = new PreziPlayer('prezi-player', {
-    'preziId' : prezi_id,
-	controls: true
-});
-
-var fb_root;
-player.on(PreziPlayer.EVENT_STATUS, function(event) {
-    if (event.value == PreziPlayer.STATUS_CONTENT_READY) {
-    	fb_root = new Firebase('https://controller.firebaseio.com');
-    	fb_root.child('screencast/current_slide').set(player.getCurrentStep());
-    	fb_root.child('screencast/current_slide').onDisconnect().remove();
-    	
-    	player.on(PreziPlayer.EVENT_CURRENT_STEP, function(e) {
-	    	fb_root.child('screencast/current_slide').set(e.value);
-    	});
-    	
-		fb_root.child('commands').on('child_added', function(snapshot) {
-			var command = snapshot.val();
-			snapshot.ref().remove();
-			
-			switch(command) {
-				case 'SWIPE_RIGHT':
-					// Next slide
-					player.flyToNextStep();
-					break;
-				case 'TWO_SWIPE_RIGHT':
-					// End of show
-					player.flyToStep(player.getStepCount()-1);
-					break;
-			
-				case 'SWIPE_LEFT':
-					// Previous slide
-					player.flyToPreviousStep();
-					break;
-				case 'TWO_SWIPE_LEFT':
-					// Beginning of show
-					player.flyToStep(0);
-					break;
+$(function() {
+	var prezi_id = '4zddjjwubebg';
+	var player = new PreziPlayer('prezi-player', {
+	    'preziId' : prezi_id,
+		controls: true,
+		width: $(window).width(),
+		height: $(window).height()
+	});
+	
+	var fb_root;
+	player.on(PreziPlayer.EVENT_STATUS, function(event) {
+	    if (event.value == PreziPlayer.STATUS_CONTENT_READY) {
+	    	fb_root = new Firebase('https://controller.firebaseio.com');
+	    	fb_root.child('screencast/current_slide').set(player.getCurrentStep());
+	    	fb_root.child('screencast/current_slide').onDisconnect().remove();
+	    	
+	    	player.on(PreziPlayer.EVENT_CURRENT_STEP, function(e) {
+		    	fb_root.child('screencast/current_slide').set(e.value);
+	    	});
+	    	
+			fb_root.child('commands').on('child_added', function(snapshot) {
+				var command = snapshot.val();
+				snapshot.ref().remove();
 				
-				default: 
-					console.log('Other command... ' + command);
-					break;
-			}
-		});
-    }
+				switch(command) {
+					case 'SWIPE_RIGHT':
+						// Next slide
+						player.flyToNextStep();
+						break;
+					case 'TWO_SWIPE_RIGHT':
+						// End of show
+						player.flyToStep(player.getStepCount()-1);
+						break;
+				
+					case 'SWIPE_LEFT':
+						// Previous slide
+						player.flyToPreviousStep();
+						break;
+					case 'TWO_SWIPE_LEFT':
+						// Beginning of show
+						player.flyToStep(0);
+						break;
+					
+					default: 
+						console.log('Other command... ' + command);
+						break;
+				}
+			});
+	    }
+	});
 });
 </script>
 </body>

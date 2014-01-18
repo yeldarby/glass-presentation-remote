@@ -27,12 +27,18 @@ app.configure('development', function() {
 	
 	app.set("view engine", 'hbs');
 	app.set("view options", { layout: false });
+	
+	app.use(express.static(__dirname));
 });
 
 var firebase_root_url = 'https://controller.firebaseio.com';
 var firebase_root = new Firebase(firebase_root_url);
 
 app.all('/', function(req, res) {
+	res.sendfile(__dirname + '/presentation.html');
+});
+
+app.all('/screenshot', function(req, res) {
 	res.sendfile(__dirname + '/screenshot.jpg');
 });
 

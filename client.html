@@ -34,11 +34,14 @@ body {
 	<div id="url" style="position: absolute; bottom: 10px; left: 10px; z-index: 1; background-color: black; color: white; padding: 5px 20px; font-size: 40px;">Current Slide: Loading...</div>
 	<div id="timer" style="position: absolute; bottom: 10px; right: 10px; z-index: 1; background-color: black; color: white; padding: 5px 20px; font-size: 40px;">0:00</div>
 <script>
-	var fb_root;
-	var start_time;
+	var fb_root = new Firebase('https://controller.firebaseio.com');
+	var start_time = null;
 	
+	var onGlass = true;
 	if(typeof WS == 'undefined') {
 		// Allow a local client without being on the Glass hardware
+		onGlass = false;
+		
 		var WS = {
 			log: function() {},
 			gestureCallback: function() {},
@@ -47,6 +50,30 @@ body {
 			wake: function() {},
 			activityCreate: function() {}
 		};
+		
+		fb_root.child('action_text').on('value', function(snapshot) {
+			var val = snapshot.val();
+			
+			if(!val || typeof val.text == 'undefined') return;
+			
+			var action = val.text;
+			
+			$('#status').text(action).css({
+				opacity: 1
+			});
+			
+			setTimeout(function() {
+				$('#status').transition({
+					opacity: 0,
+					duration: 2000
+				});
+			}, 1000);
+		});
+		
+		fb_root.child('start_time').on('value', function(snapshot) {
+			var val = snapshot.val();
+			start_time = val;
+		});
 	}
 
 	function respondToGesture(name) {
@@ -54,37 +81,43 @@ body {
 		
 		var action;
 		switch(name) {
-				case 'SWIPE_RIGHT':
-					action = 'Next Slide';
-					break;
-				case 'TWO_SWIPE_RIGHT':
-					action = 'Jump to End';
-					break;
+			case 'SWIPE_RIGHT':
+				action = 'Next Slide';
+				break;
+			case 'TWO_SWIPE_RIGHT':
+				action = 'Jump to End';
+				break;
+		
+			case 'SWIPE_LEFT':
+				action = 'Previous Slide';
+				break;
+			case 'TWO_SWIPE_LEFT':
+				action = 'Jump to Beginning';
+				break;
 			
-				case 'SWIPE_LEFT':
-					action = 'Previous Slide';
-					break;
-				case 'TWO_SWIPE_LEFT':
-					action = 'Jump to Beginning';
-					break;
-				
-				case 'TAP':
-					action = 'Refresh Screenshot';
-					fb_root.child('screencast/force_reload').set(1);
-					break;
-				
-				case 'LONG_PRESS':
-					action = 'Restart Timer';
-					start_time = Date.now();
-					break;
-				
-				default: 
-					action = 'Unknown Gesture: ' + name;
-					break;
-			}
+			case 'TAP':
+				action = 'Refresh Screenshot';
+				fb_root.child('screencast/force_reload').set(1);
+				break;
+			
+			case 'LONG_PRESS':
+				action = 'Restart Timer';
+				start_time = Date.now();
+				fb_root.child('start_time').set(start_time);
+				break;
+			
+			default: 
+				action = 'Unknown Gesture: ' + name;
+				break;
+		}
 		
 		$('#status').text(action).css({
 			opacity: 1
+		});
+		
+		fb_root.child('action_text').set({
+			text: action,
+			time: Firebase.ServerValue.TIMESTAMP
 		});
 		
 		setTimeout(function() {
@@ -104,7 +137,6 @@ body {
 	function main() {
 		if (WS.scriptVersion(0)) return;
 		
-		fb_root = new Firebase('https://controller.firebaseio.com');
 		WS.serverConnect('{{WSUrl}}', 'server');
 		
 		var prev_loaded = 0;
@@ -124,7 +156,12 @@ body {
 			WS.activityCreate();
 		});
 		
-		start_time = Date.now();
+		if(onGlass) {
+			// Sometimes start_time will be set already (if not running on Glass hardware)
+			start_time = Date.now();
+			fb_root.child('start_time').set(start_time);
+		}
+		
 		setInterval(function() {
 			var elapsed_seconds = Math.floor((Date.now() - start_time)/1000);
 			
