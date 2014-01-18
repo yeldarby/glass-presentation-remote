@@ -33,6 +33,14 @@ In a terminal window, navigate to the project directory and type `npm install` t
 Note: you will need to add your AWS client ID and secret into a `config.json` file.
 [Format documentation available from Amazon](https://github.com/aws/aws-sdk-js/blob/master/configuration.sample)
 
+Coming Soon
+===========
+
+Tap to change modes.
+
+ - Presentation timer (long hold to reset)
+ - Two finger swipe to skip to beginning or end of the presentation
+
 About this Project
 ==================
 
