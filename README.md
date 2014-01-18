@@ -29,6 +29,7 @@ Control your presentation by using the following gestures on your Glass touchpad
  - Swipe Backwards - Go to previous slide
  - Two Finger Swipe Forward - Jump to end
  - Two Finger Swipe Backwards - Jump to beginning
+ - Single Tap - Force refresh of screen mirrored image
 
 Enabling Screen Mirroring
 =========================
@@ -44,10 +45,7 @@ Note: you will need to add your AWS client ID and secret into a `config.json` fi
 Coming Soon
 ===========
 
-Tap to change modes.
-
  - Presentation timer (long hold to reset)
- - Text view (instead of screencast)
 
 About this Project
 ==================
