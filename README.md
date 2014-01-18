@@ -6,6 +6,11 @@ Presentation Remote for Google Glass
  - Mirror your display on Glass to eliminate the need for a separate screen for the presenter.
  - Resetable on-display timer to keep track of how long your presentation has gone.
 
+Video Demo
+==========
+
+[![demo video](http://img.youtube.com/vi/O7hgOJRF-m4/0.jpg)](http://www.youtube.com/watch?v=O7hgOJRF-m4&feature=youtu.be)
+
 System Requirements
 ===================
 
