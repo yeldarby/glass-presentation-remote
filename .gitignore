@@ -1,4 +1,5 @@
 config.json
 node_modules/
-*.png
-*.jpg
+screenshot.png
+screenshot.jpg
+screenshotBig.png
