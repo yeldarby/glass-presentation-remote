@@ -60,7 +60,7 @@ Control your presentation by using the following gestures on your Glass touchpad
 Feature Backlog
 ===============
 
- - Suggestions? Send me a tweet.
+ - Suggestions? Send me a tweet [@braddwyer](http://www.twitter.com/braddwyer).
 
 About this Project
 ==================
