@@ -41,6 +41,11 @@ It handles input from the touchpad and output to the screen.
 					action = 'Jump to Beginning';
 					break;
 				
+				case 'TAP':
+					// Force reload
+					fb_root.child('screencast/force_reload').set(1);
+					break;
+					
 				default: 
 					action = 'Unknown Gesture: ' + name;
 					break;
@@ -70,10 +75,14 @@ It handles input from the touchpad and output to the screen.
 		fb_root = new Firebase('https://controller.firebaseio.com');
 		WS.serverConnect('{{WSUrl}}', 'server');
 		
+		var prev_loaded = 0;
+		
 		fb_root.child('screencast').on('value', function(snapshot) {
 			var screencast = snapshot.val();
 			
-			if(!screencast || typeof screencast.current_slide == 'undefined') return;
+			if(!screencast || typeof screencast.current_slide == 'undefined' || typeof screencast.force_reload != 'undefined') return; // This is a partial update, don't update...
+			if(screencast.last_updated <= prev_loaded) return; // Race condition.. only load the screenshot if it's newer than our current one
+			prev_loaded = screencast.last_updated;
 			
 			var img_url = 'http://' + screencast.local_ip + '?' + screencast.last_updated;
 			$('#screen').attr('src', img_url);

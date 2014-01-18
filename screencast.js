@@ -38,7 +38,21 @@ app.all('/', function(req, res) {
 
 http.createServer(app).listen(80);
 
-firebase_root.child('screencast/current_slide').on('value', function(val) {
+firebase_root.child('screencast/current_slide').on('value', function(snapshot) {
+	setTimeout(takeAScreenshot, 500);
+	setTimeout(takeAScreenshot, 1000);
+	setTimeout(takeAScreenshot, 1500);
+});
+
+firebase_root.child('screencast/force_reload').on('value', function(snapshot) {
+	var val = snapshot.val();
+	if(val) {
+		snapshot.ref().remove();
+		takeAScreenshot();
+	}
+});
+
+var takeAScreenshot = function() {
 	exec('screencapture screenshotBig.png -T 0; sips -Z 320 --setProperty format jpeg --setProperty formatOptions low screenshotBig.png --out screenshot.jpg;', function() {
 		fs.stat('screenshot.jpg', function(err, file_info) {
 			if(err) console.log('fs.stat error', err);
@@ -56,5 +70,4 @@ firebase_root.child('screencast/current_slide').on('value', function(val) {
 			});
 		});
 	});
-});
-
+}
