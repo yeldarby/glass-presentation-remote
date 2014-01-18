@@ -25,12 +25,29 @@ player.on(PreziPlayer.EVENT_STATUS, function(event) {
 		fb_root.child('commands').on('child_added', function(snapshot) {
 			var command = snapshot.val();
 			snapshot.ref().remove();
-			if(command == 'SWIPE_RIGHT') {
-				player.flyToNextStep();
-			} else if(command == 'SWIPE_LEFT') {
-				player.flyToPreviousStep();
-			} else {
-				console.log('Other command... ' + command);
+			
+			switch(command) {
+				case 'SWIPE_RIGHT':
+					// Next slide
+					player.flyToNextStep();
+					break;
+				case 'TWO_SWIPE_RIGHT':
+					// End of show
+					player.flyToStep(player.getStepCount()-1);
+					break;
+			
+				case 'SWIPE_LEFT':
+					// Previous slide
+					player.flyToPreviousStep();
+					break;
+				case 'TWO_SWIPE_LEFT':
+					// Beginning of show
+					player.flyToStep(0);
+					break;
+				
+				default: 
+					console.log('Other command... ' + command);
+					break;
 			}
 		});
     }
