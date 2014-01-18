@@ -47,7 +47,6 @@ Coming Soon
 Tap to change modes.
 
  - Presentation timer (long hold to reset)
- - Two finger swipe to skip to beginning or end of the presentation
 
 About this Project
 ==================
