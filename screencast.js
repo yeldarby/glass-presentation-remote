@@ -1,0 +1,59 @@
+/*
+
+This node script handles uploading a screenshot of your computer to S3 every 5 seconds.
+It should be run on the computer your presentation is being viewed on.
+
+*/
+
+var exec = require('child_process').exec;
+var fs = require('fs');
+var http = require('http');
+var express = require('express');
+var Firebase = require('firebase');
+
+var AWS = require('aws-sdk');
+AWS.config.loadFromPath('./config.json');
+
+var s3 = new AWS.S3();
+
+var app = express();
+
+app.configure('development', function() {
+	app.use(express.bodyParser());
+	app.use(express.errorHandler());
+	app.use(express.compress());
+	
+	app.locals.pretty = true;
+	
+	app.set("view engine", 'hbs');
+	app.set("view options", { layout: false });
+});
+
+var firebase_root_url = 'https://controller.firebaseio.com';
+var firebase_root = new Firebase(firebase_root_url);
+
+app.all('/', function(req, res) {
+	res.sendfile(__dirname + '/screenshot.png');
+});
+
+http.createServer(app).listen(80);
+
+setInterval(function() {
+	exec('screencapture screenshotBig.png -T 0; sips -Z 640 screenshotBig.png --out screenshot.png;', function() {
+		fs.stat('screenshot.png', function(err, file_info) {
+			if(err) console.log('fs.stat error', err);
+			var bodyStream = fs.createReadStream('screenshot.png');
+			s3.putObject({
+				Bucket: 'mhacksscreencast',
+				Key: 'screenshot.png',
+				ContentLength: file_info.size,
+				Body: bodyStream,
+				ACL: 'public-read'
+			}, function(err, data) {
+				if(err) console.log('s3.putObject error', err);
+				firebase_root.child('screencast/last_updated').set(Firebase.ServerValue.TIMESTAMP);
+			});
+		});
+	});
+
+}, 2000);
