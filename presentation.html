@@ -24,8 +24,8 @@ player.on(PreziPlayer.EVENT_STATUS, function(event) {
     	fb_root.child('screencast/current_slide').set(player.getCurrentStep());
     	fb_root.child('screencast/current_slide').onDisconnect().remove();
     	
-    	player.on(PreziPlayer.EVENT_CURRENT_STEP, function(type, value) {
-	    	console.log('PreziPlayer.EVENT_CURRENT_STEP', type, value);
+    	player.on(PreziPlayer.EVENT_CURRENT_STEP, function(e) {
+	    	fb_root.child('screencast/current_slide').set(e.value);
     	});
     	
 		fb_root.child('commands').on('child_added', function(snapshot) {
@@ -55,10 +55,6 @@ player.on(PreziPlayer.EVENT_STATUS, function(event) {
 					console.log('Other command... ' + command);
 					break;
 			}
-			
-			setTimeout(function() {
-				fb_root.child('screencast/current_slide').set(player.getCurrentStep());
-			}, 500);
 		});
     }
 });
