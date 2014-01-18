@@ -20,7 +20,15 @@ paste the code from `client.html` into the wearscript web interface and click "W
 Now replace the Prezi ID inside of `presentation.html` and open it in your favorite web browser. This file displays and
 controls the embedded presentation.
 
-At this point you should be able to control your presentation by swiping forward and backwards on the Glass touchpad.
+Controlling Your Presentation
+=============================
+
+Control your presentation by using the following gestures on your Glass touchpad:
+
+ - Swipe Forward - Go to next slide
+ - Swipe Backwards - Go to previous slide
+ - Two Finger Swipe Forward - Jump to end
+ - Two Finger Swipe Backwards - Jump to beginning
 
 Enabling Screen Mirroring
 =========================
