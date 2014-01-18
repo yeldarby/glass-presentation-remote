@@ -21,8 +21,8 @@ var fb_root;
 player.on(PreziPlayer.EVENT_STATUS, function(event) {
     if (event.value == PreziPlayer.STATUS_CONTENT_READY) {
     	fb_root = new Firebase('https://controller.firebaseio.com');
-    	fb_root.child('current_slide').set(player.getCurrentStep());
-    	fb_root.child('current_slide').onDisconnect().remove();
+    	fb_root.child('screencast/current_slide').set(player.getCurrentStep());
+    	fb_root.child('screencast/current_slide').onDisconnect().remove();
     	
 		fb_root.child('commands').on('child_added', function(snapshot) {
 			var command = snapshot.val();
@@ -53,7 +53,7 @@ player.on(PreziPlayer.EVENT_STATUS, function(event) {
 			}
 			
 			setTimeout(function() {
-				fb_root.child('current_slide').set(player.getCurrentStep());
+				fb_root.child('screencast/current_slide').set(player.getCurrentStep());
 			}, 500);
 		});
     }

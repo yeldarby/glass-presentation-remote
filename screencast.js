@@ -38,7 +38,7 @@ app.all('/', function(req, res) {
 
 http.createServer(app).listen(80);
 
-setInterval(function() {
+firebase_root.child('screencast/current_slide').on('value', function(val) {
 	exec('screencapture screenshotBig.png -T 0; sips -Z 320 --setProperty format jpeg --setProperty formatOptions low screenshotBig.png --out screenshot.jpg;', function() {
 		fs.stat('screenshot.jpg', function(err, file_info) {
 			if(err) console.log('fs.stat error', err);
@@ -56,5 +56,5 @@ setInterval(function() {
 			});
 		});
 	});
+});
 
-}, 2000);

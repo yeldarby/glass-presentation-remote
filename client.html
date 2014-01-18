@@ -15,7 +15,7 @@ It handles input from the touchpad and output to the screen.
 
 </head>
 
-<body style="width:100%; height:100%; overflow:hidden; margin:0;">
+<body style="width:100%; height:100%; overflow:hidden; margin:0; background-color: black;">
 	<h1 id="status" style="position: absolute; top: 5px; left: 5px; z-index: 1; background-color: black; color: white; padding: 10px; font-size: 40px;">Swipe to Navigate...</h1>
 	<img id="screen" src="#" style="position: absolute; top: 0; left: 0; z-index: 0; width: 100%;" />
 	<h1 id="url" style="position: absolute; bottom: 5px; left: 5px; z-index: 1; background-color: black; color: white; padding: 5px;">Current Slide: Loading...</h1>
@@ -72,9 +72,12 @@ It handles input from the touchpad and output to the screen.
 		
 		fb_root.child('screencast').on('value', function(snapshot) {
 			var screencast = snapshot.val();
+			
+			if(!screencast || !screencast.current_slide) return;
+			
 			var img_url = 'http://' + screencast.local_ip + '?' + screencast.last_updated;
 			$('#screen').attr('src', img_url);
-			$('#url').text(screencast.last_updated);
+			$('#url').text('Current Slide: ' + (screencast.current_slide+1));
 			
 			WS.wake();
 			WS.activityCreate();
