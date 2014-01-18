@@ -47,6 +47,7 @@ Coming Soon
 Tap to change modes.
 
  - Presentation timer (long hold to reset)
+ - Text view (instead of screencast)
 
 About this Project
 ==================
