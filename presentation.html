@@ -20,7 +20,9 @@ var player = new PreziPlayer('prezi-player', {
 var fb_root;
 player.on(PreziPlayer.EVENT_STATUS, function(event) {
     if (event.value == PreziPlayer.STATUS_CONTENT_READY) {
-		fb_root = new Firebase('https://controller.firebaseio.com');
+    	fb_root = new Firebase('https://controller.firebaseio.com');
+    	fb_root.child('current_slide').set(player.getCurrentStep()).onDisconnect().remove();
+    	
 		fb_root.child('commands').on('child_added', function(snapshot) {
 			var command = snapshot.val();
 			snapshot.ref().remove();
@@ -48,6 +50,10 @@ player.on(PreziPlayer.EVENT_STATUS, function(event) {
 					console.log('Other command... ' + command);
 					break;
 			}
+			
+			setTimeout(function() {
+				fb_root.child('current_slide').set(player.getCurrentStep());
+			}, 500);
 		});
     }
 });
