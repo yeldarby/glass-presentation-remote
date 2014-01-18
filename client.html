@@ -73,7 +73,7 @@ It handles input from the touchpad and output to the screen.
 		fb_root.child('screencast').on('value', function(snapshot) {
 			var screencast = snapshot.val();
 			
-			if(!screencast || !screencast.current_slide) return;
+			if(!screencast || typeof screencast.current_slide == 'undefined') return;
 			
 			var img_url = 'http://' + screencast.local_ip + '?' + screencast.last_updated;
 			$('#screen').attr('src', img_url);
