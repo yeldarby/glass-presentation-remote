@@ -42,6 +42,9 @@ It handles input from the touchpad and output to the screen.
 			var img_url = 'http://' + screencast.local_ip + '?' + screencast.last_updated;
 			$('#screen').attr('src', img_url);
 			$('#url').text(screencast.last_updated);
+			
+			WS.wake();
+			WS.activityCreate();
 		});
 	}
 	
