@@ -1,11 +1,10 @@
 Presentation Remote for Google Glass
 ====================================
 
-Allows you to control a Prezi with your Google Glass while on stage.
-
-Navigate your Prezi by swiping forward or backward on the Glass touchpad.
-
-Mirror your display on Glass to eliminate the need for a separate screen for the presenter.
+ - Control a Prezi with your Google Glass while on stage.
+ - Navigate your Prezi by swiping forward or backward on the Glass touchpad.
+ - Mirror your display on Glass to eliminate the need for a separate screen for the presenter.
+ - Resetable on-display timer to keep track of how long your presentation has gone.
 
 Setup
 =====
@@ -30,6 +29,7 @@ Control your presentation by using the following gestures on your Glass touchpad
  - Two Finger Swipe Forward - Jump to end
  - Two Finger Swipe Backwards - Jump to beginning
  - Single Tap - Force refresh of screen mirrored image
+ - Long Press - Reset Timer
 
 Enabling Screen Mirroring
 =========================
@@ -42,10 +42,10 @@ In a terminal window, navigate to the project directory and type `npm install` t
 Note: you will need to add your AWS client ID and secret into a `config.json` file.
 [Format documentation available from Amazon](https://github.com/aws/aws-sdk-js/blob/master/configuration.sample)
 
-Coming Soon
-===========
+Feature Backlog
+===============
 
- - Presentation timer (long hold to reset)
+ - Suggestions? Send me a tweet.
 
 About this Project
 ==================
