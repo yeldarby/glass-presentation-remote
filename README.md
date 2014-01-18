@@ -40,10 +40,10 @@ Note: you will need to add your AWS client ID and secret into a `config.json` fi
 Extra Bonus Features
 ====================
 
-If you want to show someone what it looks like on your Glass display, navigate to `http://localhost/mirror`. This should be a
-(nearly) live view of what you see on Glass.
+If you want to show someone what it looks like on your Glass display, navigate to `http://localhost/mirror`
+This shows a (nearly) live view of what you see on Glass.
 
-To see only the latest screenshot that was uploaded to S3, navigate to `http://localhost/screenshot`.
+To see only the latest screenshot that was uploaded to S3, navigate to `http://localhost/screenshot`
 
 Controlling Your Presentation
 =============================
