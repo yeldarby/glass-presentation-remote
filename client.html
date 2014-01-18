@@ -8,13 +8,15 @@ It handles input from the touchpad and output to the screen.
 <html style="width:100%; height:100%; overflow:hidden">
 <head>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js"></script>
+
 <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.2/firebase.js'></script>
 
 </head>
 
 <body style="width:100%; height:100%; overflow:hidden; margin:0;">
-	<h1 id="status" style="position: absolute; top: 5px; left: 5px; z-index: 1; background-color: black; color: white; padding: 10px; font-size: 40px;">Ready...</h1>
+	<h1 id="status" style="position: absolute; top: 5px; left: 5px; z-index: 1; background-color: black; color: white; padding: 10px; font-size: 40px;">Swipe to Navigate...</h1>
 	<img id="screen" src="#" style="position: absolute; top: 0; left: 0; z-index: 0; width: 100%;" />
 	<h1 id="url" style="position: absolute; bottom: 5px; left: 5px; z-index: 1; background-color: black; color: white; padding: 5px;">No image loaded yet...</h1>
 <script>
@@ -22,7 +24,38 @@ It handles input from the touchpad and output to the screen.
 
 	function respondToGesture(name) {
 		fb_root.child('commands').push(name);
-		$('#status').text(name);
+		
+		var action;
+		switch(name) {
+				case 'SWIPE_RIGHT':
+					action = 'Next Slide';
+					break;
+				case 'TWO_SWIPE_RIGHT':
+					action = 'Jump to End';
+					break;
+			
+				case 'SWIPE_LEFT':
+					action = 'Previous Slide';
+					break;
+				case 'TWO_SWIPE_LEFT':
+					action = 'Jump to Beginning';
+					break;
+				
+				default: 
+					action = 'Unknown Gesture: ' + name;
+					break;
+			}
+		
+		$('#status').text(action).css({
+			opacity: 1
+		});
+		
+		setTimeout(function() {
+			$('#status').transition({
+				opacity: 0,
+				duration: 2000
+			});
+		}, 1000);
 	}
 	
 	function server() {
