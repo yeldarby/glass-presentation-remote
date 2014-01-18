@@ -16,33 +16,33 @@ It handles input from the touchpad and output to the screen.
 <body style="width:100%; height:100%; overflow:hidden; margin:0;">
 	<h1 id="status" style="position: absolute; top: 5px; left: 5px; z-index: 1; background-color: black; color: white; padding: 10px; font-size: 40px;">Ready...</h1>
 	<img id="screen" src="#" style="position: absolute; top: 0; left: 0; z-index: 0; width: 100%;" />
-
+	<h1 id="url" style="position: absolute; bottom: 5px; left: 5px; z-index: 1; background-color: black; color: white; padding: 5px;">No image loaded yet...</h1>
 <script>
-    var fb_root;
+	var fb_root;
 
-    function respondToGesture(name) {
-        fb_root.child('commands').push(name);
-        $('#status').text(name);
-    }
-    
+	function respondToGesture(name) {
+		fb_root.child('commands').push(name);
+		$('#status').text(name);
+	}
+	
 	function server() {
-	    WS.log('Server is connected.');
-	    
-	    WS.gestureCallback('onGesture', 'respondToGesture');
+		WS.log('Server is connected.');
+		
+		WS.gestureCallback('onGesture', 'respondToGesture');
 	}
 	
 	function main() {
-	    if (WS.scriptVersion(0)) return;
-	    
-	    fb_root = new Firebase('https://controller.firebaseio.com');
-	    WS.serverConnect('{{WSUrl}}', 'server');
-	    
-	    fb_root.child('screencast').on('value', function(snapshot) {
-	        var screencast = snapshot.val();
-	        var img_url = 'http://' + screencast.local_ip + '?' + screencast.last_updated;
-	        WS.log('Loading ' + img_url);
-	        $('#screen').attr('src', img_url);
-	    });
+		if (WS.scriptVersion(0)) return;
+		
+		fb_root = new Firebase('https://controller.firebaseio.com');
+		WS.serverConnect('{{WSUrl}}', 'server');
+		
+		fb_root.child('screencast').on('value', function(snapshot) {
+			var screencast = snapshot.val();
+			var img_url = 'http://' + screencast.local_ip + '?' + screencast.last_updated;
+			$('#screen').attr('src', img_url);
+			$('#url').text(screencast.last_updated);
+		});
 	}
 	
 	window.onload = main;
