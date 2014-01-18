@@ -1,0 +1,10 @@
+{
+	"name": "glass-presentation-remote",
+	"description": "Allows you to control your Prezi from Google Glass.",
+	"author": "Brad Dwyer <brad@hatchlings.com>",
+	"dependencies": {
+		"aws-sdk": "",
+		"express": "",
+		"firebase": ""
+	}
+}
