@@ -1,0 +1,22 @@
+<!--
+      This webpage embeds and controls your Prezi (it consumes commands sent from Glass to Firebase)
+-->
+
+<html>
+<head>
+<title>Presentation Remote for Google Glass</title>
+<script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.2/firebase.js'></script>
+<script src="prezi_player.js"></script>
+<style>
+#glass-mirror {
+	background-color: black;
+	width: 640px;
+	height: 320px;
+}
+</style>
+</head>
+<body>
+<iframe id="glass-mirror" src="http://localhost/client" frameborder="no" scrolling="no"></iframe>
+
+</body>
+</html>

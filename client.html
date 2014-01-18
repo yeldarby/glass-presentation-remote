@@ -8,6 +8,19 @@ It handles input from the touchpad and output to the screen.
 <html style="width:100%; height:100%; overflow:hidden">
 <head>
 
+<link href="https://fonts.googleapis.com/css?family=Roboto:100italic,100,300italic,300,400italic,400,500italic,500,700italic,700,900italic,900" rel="stylesheet" type="text/css">
+
+<style>
+body {
+	width:100%;
+	height:100%;
+	overflow:hidden;
+	margin:0;
+	background-color: black;
+	font-family: 'Roboto';
+}
+</style>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js"></script>
 
@@ -15,7 +28,7 @@ It handles input from the touchpad and output to the screen.
 
 </head>
 
-<body style="width:100%; height:100%; overflow:hidden; margin:0; background-color: black;">
+<body>
 	<div id="status" style="position: absolute; top: 10px; left: 10px; z-index: 1; background-color: black; color: white; padding: 10px; font-size: 40px;">Swipe to Navigate...</div>
 	<img id="screen" src="#" style="position: absolute; top: 0; left: 0; z-index: 0; width: 100%;" />
 	<div id="url" style="position: absolute; bottom: 10px; left: 10px; z-index: 1; background-color: black; color: white; padding: 5px 20px; font-size: 40px;">Current Slide: Loading...</div>
@@ -23,6 +36,18 @@ It handles input from the touchpad and output to the screen.
 <script>
 	var fb_root;
 	var start_time;
+	
+	if(typeof WS == 'undefined') {
+		// Allow a local client without being on the Glass hardware
+		var WS = {
+			log: function() {},
+			gestureCallback: function() {},
+			scriptVersion: function() {},
+			serverConnect: function() {},
+			wake: function() {},
+			activityCreate: function() {}
+		};
+	}
 
 	function respondToGesture(name) {
 		fb_root.child('commands').push(name);

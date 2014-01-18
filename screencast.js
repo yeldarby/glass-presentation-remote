@@ -36,6 +36,14 @@ app.all('/', function(req, res) {
 	res.sendfile(__dirname + '/screenshot.jpg');
 });
 
+app.all('/mirror', function(req, res) {
+	res.sendfile(__dirname + '/mirror.html');
+});
+
+app.all('/client', function(req, res) {
+	res.sendfile(__dirname + '/client.html');
+});
+
 http.createServer(app).listen(80);
 
 firebase_root.child('screencast/current_slide').on('value', function(snapshot) {
