@@ -1,0 +1,52 @@
+<!--
+
+This is the code you pass to Wearscript to load onto Glass.
+It handles input from the touchpad and output to the screen.
+
+-->
+
+<html style="width:100%; height:100%; overflow:hidden">
+<head>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
+<script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.2/firebase.js'></script>
+
+</head>
+
+<body style="width:100%; height:100%; overflow:hidden; margin:0;">
+	<h1 id="status" style="position: absolute; top: 5px; left: 5px; z-index: 1; background-color: black; color: white; padding: 10px; font-size: 40px;">Ready...</h1>
+	<img id="screen" src="#" style="position: absolute; top: 0; left: 0; z-index: 0;" />
+
+<script>
+    var fb_root;
+
+    function respondToGesture(name) {
+        fb_root.child('commands').push(name);
+        $('#status').text(name);
+    }
+    
+	function server() {
+	    WS.log('Server is connected.');
+	    
+	    WS.gestureCallback('onGesture', 'respondToGesture');
+	}
+	
+	function main() {
+	    if (WS.scriptVersion(0)) return;
+	    
+	    fb_root = new Firebase('https://controller.firebaseio.com');
+	    WS.serverConnect('{{WSUrl}}', 'server');
+	    
+	    fb_root.child('screencast').on('value', function(snapshot) {
+	        var screencast = snapshot.val();
+	        var img_url = 'http://' + screencast.local_ip + '?' + screencast.last_updated;
+	        WS.log('Loading ' + img_url);
+	        $('#screen').attr('src', img_url);
+	    });
+	}
+	
+	window.onload = main;
+</script>
+
+</body>
+</html>
