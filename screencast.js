@@ -33,22 +33,23 @@ var firebase_root_url = 'https://controller.firebaseio.com';
 var firebase_root = new Firebase(firebase_root_url);
 
 app.all('/', function(req, res) {
-	res.sendfile(__dirname + '/screenshot.png');
+	res.sendfile(__dirname + '/screenshot.jpg');
 });
 
 http.createServer(app).listen(80);
 
 setInterval(function() {
-	exec('screencapture screenshotBig.png -T 0; sips -Z 640 screenshotBig.png --out screenshot.png;', function() {
-		fs.stat('screenshot.png', function(err, file_info) {
+	exec('screencapture screenshotBig.png -T 0; sips -Z 320 --setProperty format jpeg screenshotBig.png --out screenshot.jpg;', function() {
+		fs.stat('screenshot.jpg', function(err, file_info) {
 			if(err) console.log('fs.stat error', err);
-			var bodyStream = fs.createReadStream('screenshot.png');
+			var bodyStream = fs.createReadStream('screenshot.jpg');
 			s3.putObject({
 				Bucket: 'mhacksscreencast',
-				Key: 'screenshot.png',
+				Key: 'screenshot.jpg',
 				ContentLength: file_info.size,
 				Body: bodyStream,
-				ACL: 'public-read'
+				ACL: 'public-read',
+				ContentType: 'image/jpg'
 			}, function(err, data) {
 				if(err) console.log('s3.putObject error', err);
 				firebase_root.child('screencast/last_updated').set(Firebase.ServerValue.TIMESTAMP);
