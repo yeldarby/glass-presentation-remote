@@ -32,7 +32,7 @@ Now replace the Prezi ID inside of `presentation.html`.
 To run the local server you will need `node.js` and `npm` installed on your machine.
 
 Once you have those installed, navigate to the project directory in a terminal window and type `npm install` to install the
-dependencies. Then run `sudo local.js`. This will start a web server on `http://localhost` with your presentation.
+dependencies. Then run `sudo node local.js`. This will start a web server on `http://localhost` with your presentation.
 
 Note: you will need to add your AWS client ID and secret into a `config.json` file so that the script can upload.
 [Format documentation available from Amazon](https://github.com/aws/aws-sdk-js/blob/master/configuration.sample)
